@@ -9,21 +9,28 @@ namespace Codewars
 {
     public class Kata
     {
-        public static bool Scramble(string str1, string str2)
+        public static string ToCamelCase(string str)
         {
-            var str1Arr = str1.ToCharArray();
+            var separators = new List<char>();
 
-            foreach (var chr in str2)
+            foreach (var strChar in str)
             {
-                if (!str1Arr.Contains(chr))
+                if (!char.IsLetter(strChar))
                 {
-                    return false;
+                    separators.Add(strChar);
                 }
-
-                str1Arr[Array.IndexOf(str1Arr, chr)] = '-';
             }
 
-            return true;
+            string[] words = str.Split(separators.ToArray());
+
+            for (int i = 1; i < words.Length; i++)
+            {
+                words[i] = char.ToUpper(words[i][0]) + words[i][1..];
+            }
+
+            string result = string.Join("", words);
+
+            return result;
         }
     }
 
@@ -33,16 +40,8 @@ namespace Codewars
         [Test]
         public static void Test1()
         {
-            Assert.AreEqual(true, Kata.Scramble("rkqodlw", "world"));
-            Assert.AreEqual(true, Kata.Scramble("cedewaraaossoqqyt", "codewars"));
-            Assert.AreEqual(false, Kata.Scramble("katas", "steak"));
-            Assert.AreEqual(false, Kata.Scramble("scriptjavx", "javascript"));
-            Assert.AreEqual(true, Kata.Scramble("scriptingjava", "javascript"));
-            Assert.AreEqual(true, Kata.Scramble("scriptsjava", "javascripts"));
-            Assert.AreEqual(false, Kata.Scramble("javscripts", "javascript"));
-            Assert.AreEqual(true, Kata.Scramble("aabbcamaomsccdd", "commas"));
-            Assert.AreEqual(true, Kata.Scramble("commas", "commas"));
-            Assert.AreEqual(true, Kata.Scramble("sammoc", "commas"));
+            Assert.AreEqual("theStealthWarrior", Kata.ToCamelCase("the_stealth_warrior"), "Kata.ToCamelCase('the_stealth_warrior') did not return correct value");
+            Assert.AreEqual("TheStealthWarrior", Kata.ToCamelCase("The-Stealth-Warrior"), "Kata.ToCamelCase('The-Stealth-Warrior') did not return correct value");
         }
     }
 }
