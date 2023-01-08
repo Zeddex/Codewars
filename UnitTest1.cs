@@ -3,34 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace Codewars
 {
     public class Kata
     {
-        public static string ToCamelCase(string str)
+        public static string HighAndLow(string numbers)
         {
-            var separators = new List<char>();
+            var numbArr = numbers.Split(" ");
 
-            foreach (var strChar in str)
+            var numbList = new List<int>();
+
+            foreach (var number in numbArr)
             {
-                if (!char.IsLetter(strChar))
-                {
-                    separators.Add(strChar);
-                }
+                numbList.Add(Convert.ToInt32(number));
             }
 
-            string[] words = str.Split(separators.ToArray());
+            string min = numbList.Min().ToString();
+            string max = numbList.Max().ToString();
 
-            for (int i = 1; i < words.Length; i++)
-            {
-                words[i] = char.ToUpper(words[i][0]) + words[i][1..];
-            }
-
-            string result = string.Join("", words);
-
-            return result;
+            return $"{max} {min}";
         }
     }
 
@@ -38,10 +32,14 @@ namespace Codewars
     public class Tests
     {
         [Test]
-        public static void Test1()
+        public void Test1()
         {
-            Assert.AreEqual("theStealthWarrior", Kata.ToCamelCase("the_stealth_warrior"), "Kata.ToCamelCase('the_stealth_warrior') did not return correct value");
-            Assert.AreEqual("TheStealthWarrior", Kata.ToCamelCase("The-Stealth-Warrior"), "Kata.ToCamelCase('The-Stealth-Warrior') did not return correct value");
+            Assert.AreEqual("42 -9", Kata.HighAndLow("8 3 -5 42 -1 0 0 -9 4 7 4 -4"));
+        }
+        [Test]
+        public void Test2()
+        {
+            Assert.AreEqual("3 1", Kata.HighAndLow("1 2 3"));
         }
     }
 }
